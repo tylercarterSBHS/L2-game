@@ -1,0 +1,145 @@
+<!doctype html>
+
+<body>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <script>
+        var canvas, canvasContext;
+
+        // player vars
+        const PLAYER_SIZE = 60;
+        var playerXpos = 200;
+        var playerYpos = 400;
+        var playerXspeed = 20;
+        var playerYspeed = 20;
+
+        const ENEMY_SIZE = 60;
+        var enemyXpos = 600 - ENEMY_SIZE;
+        var enemyYpos = 0;
+        var enemyXspeed = 5;
+        var enemyYspeed = 5;
+
+        var leftkeypress = false;
+        var rightkeypress = false;
+        var upkeypress = false;
+        var downkeypress = false;
+
+        var player1 = new Image();
+        player1.src = "Sprites/pixil-frame-0(2).png";
+        
+        var enemy1 = new Image();
+        enemy1.src = "sprites/suscopy.png";
+
+        // key codes
+        const W_KEY = 87;
+        const A_KEY = 65;
+        const S_KEY = 83;
+        const D_KEY = 68;
+
+
+
+
+
+
+        window.onload = function () {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
+
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
+
+            setInterval(mainloop, 1000 / 50);
+        }
+
+        function mainloop() { // runs all game code 50 times per second
+            colorRect(0, 0, canvas.width, canvas.height, 'green'); // bg
+            drawImg(player1, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); // player 
+            drawImg(enemy1, enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, 'red');
+            enemyMove();
+
+
+
+
+            playerMove();
+        } // end func 
+        function keyPressed(evt) {
+            if (evt.keyCode == A_KEY) {
+                leftkeypress = true;
+            }
+
+            if (evt.keyCode == D_KEY) {
+                rightkeypress = true;
+            }
+
+            if (evt.keyCode == W_KEY) {
+                upkeypress = true;
+            }
+
+            if (evt.keyCode == S_KEY) {
+                downkeypress = true;
+            }
+        }
+
+        function keyReleased(evt) {
+            if (evt.keyCode == A_KEY) {
+                leftkeypress = false;
+            }
+
+            if (evt.keyCode == D_KEY) {
+                rightkeypress = false;
+            }
+
+            if (evt.keyCode == W_KEY) {
+                upkeypress = false;
+            }
+
+            if (evt.keyCode == S_KEY) {
+                downkeypress = false;
+            }
+        }
+
+        function playerMove() {
+            if (leftkeypress && playerXpos > 0) {
+                playerXpos -= playerXspeed;
+            }
+            if (rightkeypress && playerXpos < canvas.width - PLAYER_SIZE) {
+                playerXpos += playerXspeed;
+            }
+            if (upkeypress && playerYpos > 0) {
+                playerYpos -= playerYspeed;
+            }
+            if (downkeypress && playerYpos < canvas.height - PLAYER_SIZE) {
+                playerYpos += playerYspeed;
+            }
+
+        }
+
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
+        }
+
+        function drawImg(src, x, y, w, h) {
+            canvasContext.drawImage(src, x, y, w, h);
+        }
+
+
+
+        //makes enemy move 
+
+        function enemyMove() {
+
+            enemyYpos += enemyYspeed;
+
+
+
+            if (enemyYpos > canvas.height) {
+
+                enemyYpos = 0 - ENEMY_SIZE;
+
+
+
+            }
+
+        }
+    </script>
+</body>
